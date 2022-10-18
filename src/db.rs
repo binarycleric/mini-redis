@@ -159,6 +159,15 @@ impl Db {
         state.entries.get(key).map(|entry| entry.data.clone())
     }
 
+    // Doesn't actually delete anything but rather sets the key with an empty value
+    // and an expirtation of right now.
+    pub(crate) fn delete(&self, key: String) {
+        let value = Bytes::new();
+        let duration = Duration::new(0, 0);
+
+        self.set(key, value, Some(duration));
+    }
+
     /// Set the value associated with a key along with an optional expiration
     /// Duration.
     ///
